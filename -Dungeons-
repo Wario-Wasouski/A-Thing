@@ -1,0 +1,2431 @@
+"""
+Unit 2
+Code Your Own:
+DUNGEONS, DUNGEONS AND EVEN MORE DUNGEONS
+"""
+##--IMPORTS--##
+import sys
+import random
+
+#--Player Setup--#
+name = input("What's the hero's name? ")
+player_attk = 5
+player_spd = 10
+player_hlth = 10
+player_def = 0
+player_wpn = 0
+spd = 10
+hlth = 10
+rations = 5
+level = 1
+skulls = 0
+kills = 17
+shop = "y"
+weapon_w = "false"
+weapon_i = "false"
+weapon_m = "false"
+armor_l = "false"
+armor_i = "false"
+armor_m = "false"
+
+##--VARIABLES--##
+goblin_attk = 3
+goblin_spd = 5
+goblin_hlth = 10
+ghost_attk = 5
+ghost_spd = 15
+ghost_hlth = 8
+zombie_attk = 6
+zombie_spd = 5
+zombie_hlth = 10
+skeleton_attk = 10
+skeleton_spd = 7
+skeleton_hlth = 12
+demon_attk = 13
+demon_spd = 20
+demon_hlth = 15
+hound_attk = 16
+hound_spd = 18
+hound_hlth = 20
+servant_attk = 17
+servant_spd = 12
+servant_hlth = 22
+reaper_attk = 18
+reaper_spd = 22
+reaper_hlth = 24
+boss_hlth = 31
+boss_attk = 25
+points = 0
+
+##--LEVEL CODE--##
+#--Easter Egg--#
+if name == "FRISK":
+    print("The True Name")
+    level = 40
+    kills = 100
+    skulls = 40
+    points = 10
+if name == "CORATONIAN":
+    print("CONGRATULATIONS!!!")
+    print("You have unlocked GOD MODE")
+    goblin_hlth = int(input("Goblin Health: "))
+    goblin_attk = int(input("Goblin Attack: "))
+    goblin_spd = int(input("Goblin Speed: "))
+    ghost_hlth = int(input("Ghost Health: "))
+    ghost_attk = int(input("Ghost Attack: "))
+    ghost_spd = int(input("Ghost Speed: "))
+    zombie_hlth = int(input("Zombie Health: "))
+    zombie_attk = int(input("Zombie Attack: "))
+    zombie_spd = int(input("Zombie Speed: "))
+    skeleton_hlth = int(input("Skeleton Health: "))
+    skeleton_attk = int(input("Skeleton Attack: "))
+    skeleton_spd = int(input("Skeleton Speed: "))
+    demon_hlth = int(input("Demon Health: "))
+    demon_attk = int(input("Demon Attack: "))
+    demon_spd = int(input("Demon Speed: "))
+    hound_hlth = int(input("Demon Hound Health: "))
+    hound_attk = int(input("Demon Hound Attack: "))
+    hound_spd = int(input("Demon Hound Speed: "))
+    servant_hlth = int(input("Hades Servant Health: "))
+    servant_attk = int(input("Hades Servant Attack: "))
+    servant_spd = int(input("Hades Servant Speed: "))
+    reaper_hlth = int(input("Reaper Health: "))
+    reaper_attk = int(input("Reaper Attack: "))
+    reaper_spd = int(input("Reaper Speed: "))
+    player_hlth = int(input("Your Health: "))
+    player_attk = int(input("Your Attack: "))
+    player_spd = int(input("Your Speed: "))
+    points = int(input("Upgrade Points: "))
+    skulls = int(input("Skulls: "))
+if name == "CHARA":
+    print("But nobody came...")
+    skulls = 60
+    points = 10
+if name == "FEAR":
+    sys.exit()
+if name == "HERO":
+    print("this wasn't an easter egg lmao")
+if name == "CHAIR":
+    print("Hard mode ACTIVATED")
+    print("GOODLUCK!!!")
+    print("speed is now -6")
+    print("health is now 5")
+    player_hlth = 5
+    player_spd = -6
+    hlth = player_hlth
+    spd = player_spd
+if name == "ZELDA":
+    print("try again ;)")
+    sys.exit()
+if name == "VODKA":
+    print("Я люблю водку")
+    sys.exit()
+if name == "W.D.GASTER":
+    while points != 50000:
+        print("Бойтесь того, кто говорит руками")
+        points += 1
+    points = 0
+    name = "FEAR"
+if name == "again...":
+    name = input("Okay... but what's the password?")
+    if name == "ZELDA":
+        print("INSANE MODE UNLOCKED")
+        print("POINTS WILL NOW GRANT ONLY ONE")
+        player_spd = -6
+        player_hlth = 5
+        hlth = player_hlth
+        spd = player_spd
+
+#--Level 1-5 --#
+while level < 6:
+    enemy_name = "Goblin"
+    enemy_hlth = goblin_hlth
+    enemy_attk = goblin_attk - player_def
+    enemy_spd = goblin_spd
+    if enemy_attk <= 1:
+        enemy_attk = 1
+    print(str(name) + " is on level " + str(level))
+    print("You are at " + str(hlth) + "hp")
+    action = input("What would you like to do? (sleep, eat, explore, upgrade, exit, checkstat) ")
+    if action == "sleep":
+        spd = player_spd
+        print("You're well rested now, time to go adventure!!!")
+    elif action == "eat":
+        if rations == 0:
+            print("S T A R V E   C H I L D")
+        else:
+            hlth += 5
+            rations -= 1
+            if hlth >= player_hlth:
+                hlth = player_hlth
+            print("You ate rations and recovered 5 hp, time to go explore! ")
+            print ("You are now at " + str(hlth) +"hp")
+    elif action == "explore":
+        adventure = random.randrange(1, 10)
+        if adventure <= 3:
+            s_amount = random.randrange(1,4)
+            print("You ran into a " + str(enemy_name) + "!!!")
+            while enemy_hlth > 0:
+                choice = input("What will you do? (attack, flee, die) ")
+                if choice == "die":
+                    print("You literally die...")
+                    sys.exit()
+                elif choice == "flee":
+                    if enemy_spd >= spd:
+                        print("You tried to run away, but you were caught")
+                    else:
+                        print("You fled, and didn't advance")
+                        level -= 1
+                        points -= 1
+                        skulls -= s_amount
+                        enemy_hlth = 0
+                    spd -= 3
+                elif choice == "attack":
+                    enemy_hlth -= player_attk + player_wpn
+                    print("You attacked the " + str(enemy_name) + ".  It now has " + str(enemy_hlth) + " health")
+                    if enemy_hlth > 0:
+                        hlth -= enemy_attk
+                        print("The " + str(enemy_name) + " attacked you and you lost " + str(enemy_attk) + " health")
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+            if choice != "flee":
+                print("You won!!!")
+                print("+1 Point")
+                print("+" + str(s_amount) + " Skull")
+                kills += 1
+            points += 1
+            skulls += s_amount
+        elif adventure <= 6:
+            print("You walked safely through the cave, this time at least...")
+        elif adventure == 7:
+            print("You tripped and lost 2 health, weakling")
+            hlth -= 2
+            if hlth <= 0:
+                print("--GAME OVER--")
+                sys.exit()
+        elif adventure == 8:
+            print("You looped around and stayed at the same level...")
+            level -= 1
+        elif adventure == 9:
+            print("You found a shortcut, and skipped a level!")
+            level += 1
+        level += 1
+    elif action == "upgrade":
+        if points > 0:
+            answer = input("Choose one to upgrade: health, attack, speed: ")
+            if answer == "health":
+                if name != "ZELDA":
+                    player_hlth += 2
+                else:
+                    player_hlth += 1
+                hlth = player_hlth
+                points -= 1
+                print("You're now at " + str(player_hlth) + " health.")
+            elif answer == "attack":
+                if name != "ZELDA":
+                    player_attk += 1
+                else:
+                    player_attk += 0.5
+                points -= 1
+                print("You're now at " + str(player_attk) + " attack.")
+            elif answer == "speed":
+                if name != "ZELDA":
+                    player_spd += 2
+                else:
+                    player_spd += 1
+                spd = player_spd
+                points -= 1
+                print("You're now at " + str(player_spd) + " speed.")
+        else:
+            print("You don't have enough points")
+    elif action == "exit":
+        if name != "FEAR":
+            print("goodbye!!!")
+            sys.exit()
+    elif action == "checkstat":
+        print("you have " + str(player_hlth) + " Max Health")
+        print("You have " + str(player_attk) + " Attack")
+        print("You have " + str(player_spd) + " Max Speed")
+        print("You have " + str(spd) + " Speed")
+        print("You have " + str(points) + " Upgrading Points")
+        print("You have " + str(skulls) + " Skulls")
+        if armor_m == "true":
+            print("You have purchased the Mythril Armor")
+        elif armor_i == "true":
+            print("You have purchased the Iron Armor")
+        elif armor_l == "true":
+            print("You have purchased the Leather Armor")
+        else:
+            print("You have no armor at the moment")
+        if weapon_m == "true":
+            print("You have purchased the Mythril Weapon")
+        elif weapon_i == "true":
+            print("You have purchased the Iron Weapon")
+        elif weapon_w == "true":
+            print("You have purchased the Wooden Sword")
+        else:
+            print("You have no weapons at the moment")
+    print(" ")
+
+#--Shop--#
+if name == "CHAIR":
+    print("There was no shopping district to be found...")
+elif name == "ZELDA":
+    print("There was no shopping district to be found...")
+elif name == "FRISK":
+    print("")
+else:
+    print("YOU HAVE REACHED A SHOPPING DISTRICT")
+    while shop != "n":
+        shop = input("Would you like to buy anything? (y/n) ")
+        if shop == "y":
+            if skulls != 0:
+                buy = input("What would you like to buy?(rations, armor, weapon) ")
+                if buy == "rations":
+                    buy_r = int(input("buying rations will cost 1 skulls, how many would you like to buy? "))
+                    if buy_r <= skulls:
+                        print("rations bought!!!")
+                        rations += buy_r
+                        skulls -= buy_r
+                    elif buy_r == "n":
+                        print("make up your mind")
+                elif buy == "armor":
+                    buy_a = input("what armor would you like to buy? (leather, iron, mythril) ")
+                    if buy_a == "leather":
+                        if armor_l == "false":
+                            print("This will cost 10 skulls and will give 2 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("armor bought!!!")
+                                    skulls -= 10
+                                    armor_l = "true"
+                                    player_def = 2
+                        elif armor_l == "true":
+                            print("You already have this item")
+                        elif armor_l == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "iron":
+                        if armor_i == "false":
+                            print("This will cost 20 skulls and will give 4 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    armor_l = "bttr"
+                                    armor_i = "true"
+                                    player_def = 4
+                        elif armor_i == "true":
+                            print("You already have this item")
+                        elif armor_i == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "mythril":
+                        if armor_m == "false":
+                            print("This will cost you 30 skulls and will give you 6 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("armor bought!!!")
+                                    skulls -= 30
+                                    armor_l = "bttr"
+                                    armor_i = "bttr"
+                                    armor_m = "true"
+                                    player_def = 6
+                        elif armor_m == "true":
+                            print("You already have this item")
+                elif buy == "weapon":
+                    buy_w = input("what weapon would you like to buy? (wooden, iron, mythril) ")
+                    if buy_w == "wooden":
+                        if weapon_w == "false":
+                            print("This will cost 10 skulls and will give 2 attack")
+                            buy_w = input("are you sure? (y/n) ")
+                            if buy_w == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("weapon bought!!!")
+                                    skulls -= 10
+                                    weapon_w = "true"
+                                    player_wpn = 2
+                        elif weapon_w == "true":
+                            print("You already have this item")
+                        elif weapon_w == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_w == "iron":
+                        if weapon_i == "false":
+                            print("This will cost 20 skulls and will give 4 attack")
+                            buy_w = input("are you sure? (y/n) ")
+                            if buy_w == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    weapon_w = "bttr"
+                                    weapon_i = "true"
+                                    player_wpn = 4
+                        elif weapon_i == "true":
+                            print("You already have this item")
+                        elif weapon_i == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_w == "mythril":
+                        if weapon_m == "false":
+                            print("This will cost you 30 skulls and will give you 8 attack")
+                            buy_w = input("are you sure? (y/n) ")
+                            if buy_w == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("weapon bought!!!")
+                                    skulls -= 30
+                                    weapon_w = "bttr"
+                                    weapon_i = "bttr"
+                                    weapon_m = "true"
+                                    player_wpn = 8
+                        elif weapon_m == "true":
+                            print("You already have this item")
+            elif skulls == 0:
+                print("You do not have enough skulls in order to buy anything")
+                shop = "n"
+print(" ")
+shop = "y"
+
+#--Level 11-20 --#
+print("MOVING ON TO SECTION #2")
+while level < 11:
+    enemy_name = "Ghost"
+    enemy_hlth = ghost_hlth
+    enemy_attk = ghost_attk - player_def
+    enemy_spd = ghost_spd
+    if enemy_attk <= 1:
+        enemy_attk = 1
+    print(str(name) + " is on level " + str(level))
+    print("You are at " + str(hlth) + "hp")
+    action = input("What would you like to do? (sleep, eat, explore, upgrade, exit, checkstat) ")
+    if action == "sleep":
+        warning = input("Are you sure?  Who knows, a monster could be watching you(y, n)... ")
+        if warning == "y":
+            ambush = random.randrange(1,3)
+            if ambush == 1:
+                spd = player_spd
+                print("You slept well and peacefully")
+            elif ambush == 2:
+                print("You were ambushed in your sleep, you lost all rations and lost 5 health")
+                rations = 0
+                hlth -= 5
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+        elif warning == "n":
+            print("Playing it safe, I see...")
+        print("You're well rested now, time to go adventure!!!")
+    elif action == "eat":
+        if rations == 0:
+            print("S T A R V E   C H I L D")
+        else:
+            hlth += 5
+            rations -= 1
+            if hlth >= player_hlth:
+                hlth = player_hlth
+            print("You ate rations and recovered 5 hp, time to go explore! ")
+            print ("You are now at " + str(hlth) +"hp")
+    elif action == "explore":
+        adventure = random.randrange(1, 10)
+        if adventure <= 3:
+            s_amount = random.randrange(1,4)
+            print("You ran into a " + str(enemy_name) + "!!!")
+            while enemy_hlth > 0:
+                choice = input("What will you do? (attack, flee, die) ")
+                if choice == "die":
+                    print("You literally die...")
+                    sys.exit()
+                elif choice == "flee":
+                    if enemy_spd >= spd:
+                        print("You tried to run away, but you were caught")
+                    else:
+                        print("You fled, and didn't advance")
+                        level -= 1
+                        points -= 1
+                        skulls -= s_amount
+                        enemy_hlth = 0
+                    spd -= 3
+                elif choice == "attack":
+                    enemy_hlth -= player_attk + player_wpn
+                    print("You attacked the " + str(enemy_name) + ".  It now has " + str(enemy_hlth) + " health")
+                    if enemy_hlth > 0:
+                        hlth -= enemy_attk
+                        print("The " + str(enemy_name) + " attacked you and you lost " + str(enemy_attk) + " health")
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+            if choice != "flee":
+                print("You won!!!")
+                print("+1 Point")
+                print("+" + str(s_amount) + " Skulls")
+                kills += 1
+            points += 1
+            skulls += s_amount
+        elif adventure <= 6:
+            print("You walked safely through the cave, this time at least...")
+        elif adventure == 7:
+            print("You tripped and lost 2 health, weakling")
+            hlth -= 2
+            if hlth <= 0:
+                print("--GAME OVER--")
+                sys.exit()
+        elif adventure == 8:
+            print("You looped around and stayed at the same level...")
+            level -= 1
+        elif adventure == 9:
+            print("You found a shortcut, and skipped a level!")
+            level += 1
+        level += 1
+    elif action == "upgrade":
+        if points > 0:
+            answer = input("Choose one to upgrade: health, attack, speed: ")
+            if answer == "health":
+                if name != "ZELDA":
+                    player_hlth += 2
+                else:
+                    player_hlth += 1
+                hlth = player_hlth
+                points -= 1
+                print("You're now at " + str(player_hlth) + " health.")
+            elif answer == "attack":
+                if name != "ZELDA":
+                    player_attk += 1
+                else:
+                    player_attk += 0.5
+                points -= 1
+                print("You're now at " + str(player_attk) + " attack.")
+            elif answer == "speed":
+                if name != "ZELDA":
+                    player_spd += 2
+                else:
+                    player_spd += 1
+                spd = player_spd
+                points -= 1
+                print("You're now at " + str(player_spd) + " speed.")
+        else:
+            print("You don't have enough points")
+    elif action == "exit":
+        if name != "FEAR":
+            print("goodbye!!!")
+            sys.exit()
+    elif action == "checkstat":
+        print("you have " + str(player_hlth) + " Max Health")
+        print("You have " + str(player_attk) + " Attack")
+        print("You have " + str(player_spd) + " Max Speed")
+        print("You have " + str(spd) + " Speed")
+        print("You have " + str(points) + " Upgrading Points")
+        print("You have " + str(skulls) + " Skulls")
+        if armor_m == "true":
+            print("You have purchased the Mythril Armor")
+        elif armor_i == "true":
+            print("You have purchased the Iron Armor")
+        elif armor_l == "true":
+            print("You have purchased the Leather Armor")
+        else:
+            print("You have no armor at the moment")
+        if weapon_m == "true":
+            print("You have purchased the Mythril Weapon")
+        elif weapon_i == "true":
+            print("You have purchased the Iron Weapon")
+        elif weapon_w == "true":
+            print("You have purchased the Wooden Sword")
+        else:
+            print("You have no weapons at the moment")
+    print(" ")
+
+#--Shop 2--#
+if name == "CHAIR":
+    print("There was no shopping district to be found...")
+elif name == "ZELDA":
+    print("There was no shopping district to be found...")
+elif name == "FRISK":
+    print("")
+else:
+    print("YOU HAVE REACHED A SHOPPING DISTRICT")
+    while shop != "n":
+        shop = input("Would you like to buy anything? (y/n) ")
+        if shop == "y":
+            if skulls != 0:
+                buy = input("What would you like to buy?(rations, armor, weapon) ")
+                if buy == "rations":
+                    buy_r = int(input("buying rations will cost 1 skulls, how many would you like to buy? "))
+                    if buy_r <= skulls:
+                        print("rations bought!!!")
+                        rations += buy_r
+                        skulls -= buy_r
+                    elif buy_r == "n":
+                        print("make up your mind")
+                elif buy == "armor":
+                    buy_a = input("what armor would you like to buy? (leather, iron, mythril) ")
+                    if buy_a == "leather":
+                        if armor_l == "false":
+                            print("This will cost 10 skulls and will give 2 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("armor bought!!!")
+                                    skulls -= 10
+                                    armor_l = "true"
+                                    player_def = 2
+                        elif armor_l == "true":
+                            print("You already have this item")
+                        elif armor_l == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "iron":
+                        if armor_i == "false":
+                            print("This will cost 20 skulls and will give 4 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    armor_l = "bttr"
+                                    armor_i = "true"
+                                    player_def = 4
+                        elif armor_i == "true":
+                            print("You already have this item")
+                        elif armor_i == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "mythril":
+                        if armor_m == "false":
+                            print("This will cost you 30 skulls and will give you 6 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("armor bought!!!")
+                                    skulls -= 30
+                                    armor_l = "bttr"
+                                    armor_i = "bttr"
+                                    armor_m = "true"
+                                    player_def = 6
+                        elif armor_m == "true":
+                            print("You already have this item")
+                elif buy == "weapon":
+                    buy_w = input("what weapon would you like to buy? (wooden, iron, mythril) ")
+                    if buy_w == "wooden":
+                        if weapon_w == "false":
+                            print("This will cost 10 skulls and will give 2 attack")
+                            buy_w = input("are you sure? (y/n) ")
+                            if buy_w == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("weapon bought!!!")
+                                    skulls -= 10
+                                    weapon_w = "true"
+                                    player_wpn = 2
+                        elif weapon_w == "true":
+                            print("You already have this item")
+                        elif weapon_w == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_w == "iron":
+                        if weapon_i == "false":
+                            print("This will cost 20 skulls and will give 4 attack")
+                            buy_w = input("are you sure? (y/n) ")
+                            if buy_w == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    weapon_w = "bttr"
+                                    weapon_i = "true"
+                                    player_wpn = 4
+                        elif weapon_i == "true":
+                            print("You already have this item")
+                        elif weapon_i == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_w == "mythril":
+                        if weapon_m == "false":
+                            print("This will cost you 30 skulls and will give you 8 attack")
+                            buy_w = input("are you sure? (y/n) ")
+                            if buy_w == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("weapon bought!!!")
+                                    skulls -= 30
+                                    weapon_w = "bttr"
+                                    weapon_i = "bttr"
+                                    weapon_m = "true"
+                                    player_wpn = 8
+                        elif weapon_m == "true":
+                            print("You already have this item")
+            elif skulls == 0:
+                print("You do not have enough skulls in order to buy anything")
+                shop = "n"
+print(" ")
+shop = "y"
+
+#--Level 21-30 --#
+print("MOVING ON TO SECTION #3")
+while level < 16:
+    enemy_name = "Zombie"
+    enemy_hlth = zombie_hlth
+    enemy_attk = zombie_attk - player_def
+    enemy_spd = zombie_spd
+    if enemy_attk <= 1:
+        enemy_attk = 1
+    print(str(name) + " is on level " + str(level))
+    print("You are at " + str(hlth) + "hp")
+    action = input("What would you like to do? (sleep, eat, explore, upgrade, exit, checkstat) ")
+    if action == "sleep":
+        warning = input("Are you sure?  Who knows, a monster could be watching you(y, n)... ")
+        if warning == "y":
+            ambush = random.randrange(1,3)
+            if ambush == 1:
+                spd = player_spd
+                print("You slept well and peacefully")
+            elif ambush == 2:
+                print("You were ambushed in your sleep, you lost all rations and lost 5 health")
+                rations = 0
+                hlth -= 5
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+        elif warning == "n":
+            print("Playing it safe, I see...")
+        print("You're well rested now, time to go adventure!!!")
+    elif action == "eat":
+        if rations == 0:
+            print("S T A R V E   C H I L D")
+        else:
+            hlth += 5
+            rations -= 1
+            if hlth >= player_hlth:
+                hlth = player_hlth
+            print("You ate rations and recovered 5 hp, time to go explore! ")
+            print ("You are now at " + str(hlth) +"hp")
+    elif action == "explore":
+        adventure = random.randrange(1, 10)
+        if adventure <= 3:
+            s_amount = random.randrange(1,4)
+            print("You ran into a " + str(enemy_name) + "!!!")
+            while enemy_hlth > 0:
+                choice = input("What will you do? (attack, flee, die) ")
+                if choice == "die":
+                    print("You literally die...")
+                    sys.exit()
+                elif choice == "flee":
+                    if enemy_spd >= spd:
+                        print("You tried to run away, but you were caught")
+                    else:
+                        print("You fled, and didn't advance")
+                        level -= 1
+                        points -= 1
+                        skulls -= s_amount
+                        enemy_hlth = 0
+                    spd -= 3
+                elif choice == "attack":
+                    enemy_hlth -= player_attk + player_wpn
+                    print("You attacked the " + str(enemy_name) + ".  It now has " + str(enemy_hlth) + " health")
+                    if enemy_hlth > 0:
+                        hlth -= enemy_attk
+                        print("The " + str(enemy_name) + " attacked you and you lost " + str(enemy_attk) + " health")
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+            if choice != "flee":
+                print("You won!!!")
+                print("+1 Point")
+                print("+" + str(s_amount) + " Skull")
+                kills += 1
+            points += 1
+            skulls += s_amount
+        elif adventure <= 6:
+            print("You walked safely through the cave, this time at least...")
+        elif adventure == 7:
+            print("You tripped and lost 2 health, weakling")
+            hlth -= 2
+            if hlth <= 0:
+                print("--GAME OVER--")
+                sys.exit()
+        elif adventure == 8:
+            print("You looped around and stayed at the same level...")
+            level -= 1
+        elif adventure == 9:
+            print("You found a shortcut, and skipped a level!")
+            level += 1
+        level += 1
+    elif action == "upgrade":
+        if points > 0:
+            answer = input("Choose one to upgrade: health, attack, speed: ")
+            if answer == "health":
+                if name != "ZELDA":
+                    player_hlth += 2
+                else:
+                    player_hlth += 1
+                hlth = player_hlth
+                points -= 1
+                print("You're now at " + str(player_hlth) + " health.")
+            elif answer == "attack":
+                if name != "ZELDA":
+                    player_attk += 1
+                else:
+                    player_attk += 0.5
+                points -= 1
+                print("You're now at " + str(player_attk) + " attack.")
+            elif answer == "speed":
+                if name != "ZELDA":
+                    player_spd += 2
+                else:
+                    player_spd += 1
+                spd = player_spd
+                points -= 1
+                print("You're now at " + str(player_spd) + " speed.")
+        else:
+            print("You don't have enough points")
+    elif action == "exit":
+        if name != "FEAR":
+            print("goodbye!!!")
+            sys.exit()
+    elif action == "checkstat":
+        print("you have " + str(player_hlth) + " Max Health")
+        print("You have " + str(player_attk) + " Attack")
+        print("You have " + str(player_spd) + " Max Speed")
+        print("You have " + str(spd) + " Speed")
+        print("You have " + str(points) + " Upgrading Points")
+        print("You have " + str(skulls) + " Skulls")
+        if armor_m == "true":
+            print("You have purchased the Mythril Armor")
+        elif armor_i == "true":
+            print("You have purchased the Iron Armor")
+        elif armor_l == "true":
+            print("You have purchased the Leather Armor")
+        else:
+            print("You have no armor at the moment")
+        if weapon_m == "true":
+            print("You have purchased the Mythril Weapon")
+        elif weapon_i == "true":
+            print("You have purchased the Iron Weapon")
+        elif weapon_w == "true":
+            print("You have purchased the Wooden Sword")
+        else:
+            print("You have no weapons at the moment")
+    print(" ")
+
+#--Shop 3--#
+if name == "CHAIR":
+    print("There was no shopping district to be found...")
+elif name == "ZELDA":
+    print("There was no shopping district to be found...")
+elif name == "FRISK":
+    print("")
+else:
+    print("YOU HAVE REACHED A SHOPPING DISTRICT")
+    while shop != "n":
+        shop = input("Would you like to buy anything? (y/n) ")
+        if shop == "y":
+            if skulls != 0:
+                buy = input("What would you like to buy?(rations, armor, weapon) ")
+                if buy == "rations":
+                    buy_r = int(input("buying rations will cost 1 skulls, how many would you like to buy? "))
+                    if buy_r <= skulls:
+                        print("rations bought!!!")
+                        rations += buy_r
+                        skulls -= buy_r
+                    elif buy_r == "n":
+                        print("make up your mind")
+                elif buy == "armor":
+                    buy_a = input("what armor would you like to buy? (leather, iron, mythril) ")
+                    if buy_a == "leather":
+                        if armor_l == "false":
+                            print("This will cost 10 skulls and will give 2 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("armor bought!!!")
+                                    skulls -= 10
+                                    armor_l = "true"
+                                    player_def = 2
+                        elif armor_l == "true":
+                            print("You already have this item")
+                        elif armor_l == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "iron":
+                        if armor_i == "false":
+                            print("This will cost 20 skulls and will give 4 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    armor_l = "bttr"
+                                    armor_i = "true"
+                                    player_def = 4
+                        elif armor_i == "true":
+                            print("You already have this item")
+                        elif armor_i == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "mythril":
+                        if armor_m == "false":
+                            print("This will cost you 30 skulls and will give you 6 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("armor bought!!!")
+                                    skulls -= 30
+                                    armor_l = "bttr"
+                                    armor_i = "bttr"
+                                    armor_m = "true"
+                                    player_def = 6
+                        elif armor_m == "true":
+                            print("You already have this item")
+                elif buy == "weapon":
+                    buy_a = input("what armor would you like to buy? (wooden, iron, mythril) ")
+                    if buy_a == "wooden":
+                        if weapon_w == "false":
+                            print("This will cost 10 skulls and will give 2 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("weapon bought!!!")
+                                    skulls -= 10
+                                    weapon_w = "true"
+                                    player_wpn = 2
+                        elif weapon_w == "true":
+                            print("You already have this item")
+                        elif weapon_w == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "iron":
+                        if weapon_i == "false":
+                            print("This will cost 20 skulls and will give 4 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    weapon_w = "bttr"
+                                    weapon_i = "true"
+                                    player_wpn = 4
+                        elif weapon_i == "true":
+                            print("You already have this item")
+                        elif weapon_i == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "mythril":
+                        if weapon_m == "false":
+                            print("This will cost you 30 skulls and will give you 8 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("weapon bought!!!")
+                                    skulls -= 30
+                                    weapon_w = "bttr"
+                                    weapon_i = "bttr"
+                                    weapon_m = "true"
+                                    player_wpn = 8
+                        elif weapon_m == "true":
+                            print("You already have this item")
+            elif skulls == 0:
+                print("You do not have enough skulls in order to buy anything")
+                shop = "n"
+print(" ")
+shop = "y"
+
+#--Level 31-40 --#
+print("MOVING ON TO SECTION #4")
+while level < 21:
+    enemy_name = "Skeleton"
+    enemy_hlth = skeleton_hlth
+    enemy_attk = skeleton_attk - player_def
+    enemy_spd = skeleton_spd
+    if enemy_attk <= 1:
+        enemy_attk = 1
+    print(str(name) + " is on level " + str(level))
+    print("You are at " + str(hlth) + "hp")
+    action = input("What would you like to do? (sleep, eat, explore, upgrade, exit, checkstat) ")
+    if action == "sleep":
+        warning = input("Are you sure?  Who knows, a monster could be watching you(y, n)... ")
+        if warning == "y":
+            ambush = random.randrange(1,3)
+            if ambush == 1:
+                spd = player_spd
+                print("You slept well and peacefully")
+            elif ambush == 2:
+                print("You were ambushed in your sleep, you lost all rations and lost 5 health")
+                rations = 0
+                hlth -= 5
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+        elif warning == "n":
+            print("Playing it safe, I see...")
+        print("You're well rested now, time to go adventure!!!")
+    elif action == "eat":
+        if rations == 0:
+            print("S T A R V E   C H I L D")
+        else:
+            hlth += 5
+            rations -= 1
+            if hlth >= player_hlth:
+                hlth = player_hlth
+            print("You ate rations and recovered 5 hp, time to go explore! ")
+            print ("You are now at " + str(hlth) +"hp")
+    elif action == "explore":
+        adventure = random.randrange(1, 10)
+        if adventure <= 3:
+            s_amount = random.randrange(1,4)
+            print("You ran into a " + str(enemy_name) + "!!!")
+            while enemy_hlth > 0:
+                choice = input("What will you do? (attack, flee, die) ")
+                if choice == "die":
+                    print("You literally die...")
+                    sys.exit()
+                elif choice == "flee":
+                    if enemy_spd >= spd:
+                        print("You tried to run away, but you were caught")
+                    else:
+                        print("You fled, and didn't advance")
+                        level -= 1
+                        points -= 1
+                        skulls -= s_amount
+                        enemy_hlth = 0
+                    spd -= 3
+                elif choice == "attack":
+                    enemy_hlth -= player_attk + player_wpn
+                    print("You attacked the " + str(enemy_name) + ".  It now has " + str(enemy_hlth) + " health")
+                    if enemy_hlth > 0:
+                        hlth -= enemy_attk
+                        print("The " + str(enemy_name) + " attacked you and you lost " + str(enemy_attk) + " health")
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+            if choice != "flee":
+                print("You won!!!")
+                print("+1 Point")
+                print("+" + str(s_amount) + " Skull")
+                kills += 1
+            points += 1
+            skulls += s_amount
+        elif adventure <= 6:
+            print("You walked safely through the cave, this time at least...")
+        elif adventure == 7:
+            print("You tripped and lost 2 health, weakling")
+            hlth -= 2
+            if hlth <= 0:
+                print("--GAME OVER--")
+                sys.exit()
+        elif adventure == 8:
+            print("You looped around and stayed at the same level...")
+            level -= 1
+        elif adventure == 9:
+            print("You found a shortcut, and skipped a level!")
+            level += 1
+        level += 1
+    elif action == "upgrade":
+        if points > 0:
+            answer = input("Choose one to upgrade: health, attack, speed: ")
+            if answer == "health":
+                if name != "ZELDA":
+                    player_hlth += 2
+                else:
+                    player_hlth += 1
+                hlth = player_hlth
+                points -= 1
+                print("You're now at " + str(player_hlth) + " health.")
+            elif answer == "attack":
+                if name != "ZELDA":
+                    player_attk += 1
+                else:
+                    player_attk += 0.5
+                points -= 1
+                print("You're now at " + str(player_attk) + " attack.")
+            elif answer == "speed":
+                if name != "ZELDA":
+                    player_spd += 2
+                else:
+                    player_spd += 1
+                spd = player_spd
+                points -= 1
+                print("You're now at " + str(player_spd) + " speed.")
+        else:
+            print("You don't have enough points")
+    elif action == "exit":
+        if name != "FEAR":
+            print("goodbye!!!")
+            sys.exit()
+    elif action == "checkstat":
+        print("you have " + str(player_hlth) + " Max Health")
+        print("You have " + str(player_attk) + " Attack")
+        print("You have " + str(player_spd) + " Max Speed")
+        print("You have " + str(spd) + " Speed")
+        print("You have " + str(points) + " Upgrading Points")
+        print("You have " + str(skulls) + " Skulls")
+        if armor_m == "true":
+            print("You have purchased the Mythril Armor")
+        elif armor_i == "true":
+            print("You have purchased the Iron Armor")
+        elif armor_l == "true":
+            print("You have purchased the Leather Armor")
+        else:
+            print("You have no armor at the moment")
+        if weapon_m == "true":
+            print("You have purchased the Mythril Weapon")
+        elif weapon_i == "true":
+            print("You have purchased the Iron Weapon")
+        elif weapon_w == "true":
+            print("You have purchased the Wooden Sword")
+        else:
+            print("You have no weapons at the moment")
+    print(" ")
+
+#--Shop 4--#
+if name == "CHAIR":
+    print("There was no shopping district to be found...")
+elif name == "ZELDA":
+    print("There was no shopping district to be found...")
+elif name == "FRISK":
+    print("")
+else:
+    print("YOU HAVE REACHED A SHOPPING DISTRICT")
+    while shop != "n":
+        shop = input("Would you like to buy anything? (y/n) ")
+        if shop == "y":
+            if skulls != 0:
+                buy = input("What would you like to buy?(rations, armor, weapon) ")
+                if buy == "rations":
+                    buy_r = int(input("buying rations will cost 1 skulls, how many would you like to buy? "))
+                    if buy_r <= skulls:
+                        print("rations bought!!!")
+                        rations += buy_r
+                        skulls -= buy_r
+                    elif buy_r == "n":
+                        print("make up your mind")
+                elif buy == "armor":
+                    buy_a = input("what armor would you like to buy? (leather, iron, mythril) ")
+                    if buy_a == "leather":
+                        if armor_l == "false":
+                            print("This will cost 10 skulls and will give 2 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("armor bought!!!")
+                                    skulls -= 10
+                                    armor_l = "true"
+                                    player_def = 2
+                        elif armor_l == "true":
+                            print("You already have this item")
+                        elif armor_l == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "iron":
+                        if armor_i == "false":
+                            print("This will cost 20 skulls and will give 4 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    armor_l = "bttr"
+                                    armor_i = "true"
+                                    player_def = 4
+                        elif armor_i == "true":
+                            print("You already have this item")
+                        elif armor_i == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "mythril":
+                        if armor_m == "false":
+                            print("This will cost you 30 skulls and will give you 6 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("armor bought!!!")
+                                    skulls -= 30
+                                    armor_l = "bttr"
+                                    armor_i = "bttr"
+                                    armor_m = "true"
+                                    player_def = 6
+                        elif armor_m == "true":
+                            print("You already have this item")
+                elif buy == "weapon":
+                    buy_a = input("what armor would you like to buy? (wooden, iron, mythril) ")
+                    if buy_a == "wooden":
+                        if weapon_w == "false":
+                            print("This will cost 10 skulls and will give 2 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("weapon bought!!!")
+                                    skulls -= 10
+                                    weapon_w = "true"
+                                    player_wpn = 2
+                        elif weapon_w == "true":
+                            print("You already have this item")
+                        elif weapon_w == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "iron":
+                        if weapon_i == "false":
+                            print("This will cost 20 skulls and will give 4 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    weapon_w = "bttr"
+                                    weapon_i = "true"
+                                    player_wpn = 4
+                        elif weapon_i == "true":
+                            print("You already have this item")
+                        elif weapon_i == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "mythril":
+                        if weapon_m == "false":
+                            print("This will cost you 30 skulls and will give you 8 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("weapon bought!!!")
+                                    skulls -= 30
+                                    weapon_w = "bttr"
+                                    weapon_i = "bttr"
+                                    weapon_m = "true"
+                                    player_wpn = 8
+                        elif weapon_m == "true":
+                            print("You already have this item")
+            elif skulls == 0:
+                print("You do not have enough skulls in order to buy anything")
+                shop = "n"
+print(" ")
+shop = "y"
+
+#--Level 21-25--#
+print("MOVING ON TO SECTION #5")
+while level < 26:
+    enemy_name = "Demon"
+    enemy_hlth = demon_hlth
+    enemy_attk = demon_attk - player_def
+    enemy_spd = demon_spd
+    if enemy_attk <= 1:
+        enemy_attk = 1
+    print(str(name) + " is on level " + str(level))
+    print("You are at " + str(hlth) + "hp")
+    action = input("What would you like to do? (sleep, eat, explore, upgrade, exit, checkstat) ")
+    if action == "sleep":
+        warning = input("Are you sure?  Who knows, a monster could be watching you(y, n)... ")
+        if warning == "y":
+            ambush = random.randrange(1,3)
+            if ambush == 1:
+                spd = player_spd
+                print("You slept well and peacefully")
+            elif ambush == 2:
+                print("You were ambushed in your sleep, you lost all rations and lost 5 health")
+                rations = 0
+                hlth -= 5
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+        elif warning == "n":
+            print("Playing it safe, I see...")
+        print("You're well rested now, time to go adventure!!!")
+    elif action == "eat":
+        if rations == 0:
+            print("S T A R V E   C H I L D")
+        else:
+            hlth += 5
+            rations -= 1
+            if hlth >= player_hlth:
+                hlth = player_hlth
+            print("You ate rations and recovered 5 hp, time to go explore! ")
+            print ("You are now at " + str(hlth) +"hp")
+    elif action == "explore":
+        adventure = random.randrange(1, 10)
+        if adventure <= 3:
+            s_amount = random.randrange(1,4)
+            print("You ran into a " + str(enemy_name) + "!!!")
+            while enemy_hlth > 0:
+                choice = input("What will you do? (attack, flee, die) ")
+                if choice == "die":
+                    print("You literally die...")
+                    sys.exit()
+                elif choice == "flee":
+                    if enemy_spd >= spd:
+                        print("You tried to run away, but you were caught")
+                    else:
+                        print("You fled, and didn't advance")
+                        level -= 1
+                        points -= 1
+                        skulls -= s_amount
+                        enemy_hlth = 0
+                    spd -= 3
+                elif choice == "attack":
+                    enemy_hlth -= player_attk + player_wpn
+                    print("You attacked the " + str(enemy_name) + ".  It now has " + str(enemy_hlth) + " health")
+                    if enemy_hlth > 0:
+                        hlth -= enemy_attk
+                        print("The " + str(enemy_name) + " attacked you and you lost " + str(enemy_attk) + " health")
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+            if choice != "flee":
+                print("You won!!!")
+                print("+1 Point")
+                print("+" + str(s_amount) + " Skull")
+                kills += 1
+            points += 1
+            skulls += s_amount
+        elif adventure <= 6:
+            print("You walked safely through the cave, this time at least...")
+        elif adventure == 7:
+            print("You tripped and lost 2 health, weakling")
+            hlth -= 2
+            if hlth <= 0:
+                print("--GAME OVER--")
+                sys.exit()
+        elif adventure == 8:
+            print("You looped around and stayed at the same level...")
+            level -= 1
+        elif adventure == 9:
+            print("You found a shortcut, and skipped a level!")
+            level += 1
+        level += 1
+    elif action == "upgrade":
+        if points > 0:
+            answer = input("Choose one to upgrade: health, attack, speed: ")
+            if answer == "health":
+                if name != "ZELDA":
+                    player_hlth += 2
+                else:
+                    player_hlth += 1
+                hlth = player_hlth
+                points -= 1
+                print("You're now at " + str(player_hlth) + " health.")
+            elif answer == "attack":
+                if name != "ZELDA":
+                    player_attk += 1
+                else:
+                    player_attk += 0.5
+                points -= 1
+                print("You're now at " + str(player_attk) + " attack.")
+            elif answer == "speed":
+                if name != "ZELDA":
+                    player_spd += 2
+                else:
+                    player_spd += 1
+                spd = player_spd
+                points -= 1
+                print("You're now at " + str(player_spd) + " speed.")
+        else:
+            print("You don't have enough points")
+    elif action == "exit":
+        if name != "FEAR":
+            print("goodbye!!!")
+            sys.exit()
+    elif action == "checkstat":
+        print("you have " + str(player_hlth) + " Max Health")
+        print("You have " + str(player_attk) + " Attack")
+        print("You have " + str(player_spd) + " Max Speed")
+        print("You have " + str(spd) + " Speed")
+        print("You have " + str(points) + " Upgrading Points")
+        print("You have " + str(skulls) + " Skulls")
+        if armor_m == "true":
+            print("You have purchased the Mythril Armor")
+        elif armor_i == "true":
+            print("You have purchased the Iron Armor")
+        elif armor_l == "true":
+            print("You have purchased the Leather Armor")
+        else:
+            print("You have no armor at the moment")
+        if weapon_m == "true":
+            print("You have purchased the Mythril Weapon")
+        elif weapon_i == "true":
+            print("You have purchased the Iron Weapon")
+        elif weapon_w == "true":
+            print("You have purchased the Wooden Sword")
+        else:
+            print("You have no weapons at the moment")
+    print(" ")
+
+#--Shop 5--#
+if name == "CHAIR":
+    print("There was no shopping district to be found...")
+elif name == "ZELDA":
+    print("There was no shopping district to be found...")
+elif name == "FRISK":
+    print("")
+else:
+    print("YOU HAVE REACHED A SHOPPING DISTRICT")
+    while shop != "n":
+        shop = input("Would you like to buy anything? (y/n) ")
+        if shop == "y":
+            if skulls != 0:
+                buy = input("What would you like to buy?(rations, armor, weapon) ")
+                if buy == "rations":
+                    buy_r = int(input("buying rations will cost 1 skulls, how many would you like to buy? "))
+                    if buy_r <= skulls:
+                        print("rations bought!!!")
+                        rations += buy_r
+                        skulls -= buy_r
+                    elif buy_r == "n":
+                        print("make up your mind")
+                elif buy == "armor":
+                    buy_a = input("what armor would you like to buy? (leather, iron, mythril) ")
+                    if buy_a == "leather":
+                        if armor_l == "false":
+                            print("This will cost 10 skulls and will give 2 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("armor bought!!!")
+                                    skulls -= 10
+                                    armor_l = "true"
+                                    player_def = 2
+                        elif armor_l == "true":
+                            print("You already have this item")
+                        elif armor_l == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "iron":
+                        if armor_i == "false":
+                            print("This will cost 20 skulls and will give 4 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    armor_l = "bttr"
+                                    armor_i = "true"
+                                    player_def = 4
+                        elif armor_i == "true":
+                            print("You already have this item")
+                        elif armor_i == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "mythril":
+                        if armor_m == "false":
+                            print("This will cost you 30 skulls and will give you 6 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("armor bought!!!")
+                                    skulls -= 30
+                                    armor_l = "bttr"
+                                    armor_i = "bttr"
+                                    armor_m = "true"
+                                    player_def = 6
+                        elif armor_m == "true":
+                            print("You already have this item")
+                elif buy == "weapon":
+                    buy_a = input("what armor would you like to buy? (wooden, iron, mythril) ")
+                    if buy_a == "wooden":
+                        if weapon_w == "false":
+                            print("This will cost 10 skulls and will give 2 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("weapon bought!!!")
+                                    skulls -= 10
+                                    weapon_w = "true"
+                                    player_wpn = 2
+                        elif weapon_w == "true":
+                            print("You already have this item")
+                        elif weapon_w == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "iron":
+                        if weapon_i == "false":
+                            print("This will cost 20 skulls and will give 4 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    weapon_w = "bttr"
+                                    weapon_i = "true"
+                                    player_wpn = 4
+                        elif weapon_i == "true":
+                            print("You already have this item")
+                        elif weapon_i == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "mythril":
+                        if weapon_m == "false":
+                            print("This will cost you 30 skulls and will give you 8 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("weapon bought!!!")
+                                    skulls -= 30
+                                    weapon_w = "bttr"
+                                    weapon_i = "bttr"
+                                    weapon_m = "true"
+                                    player_wpn = 8
+                        elif weapon_m == "true":
+                            print("You already have this item")
+            elif skulls == 0:
+                print("You do not have enough skulls in order to buy anything")
+                shop = "n"
+print(" ")
+shop = "y"
+
+#--level 26-30--#
+print("MOVING ON TO SECTION #6")
+while level < 31:
+    enemy_name = "Demon Hound"
+    enemy_hlth = hound_hlth
+    enemy_attk = hound_attk - player_def
+    enemy_spd = hound_spd
+    if enemy_attk <= 1:
+        enemy_attk = 1
+    print(str(name) + " is on level " + str(level))
+    print("You are at " + str(hlth) + "hp")
+    action = input("What would you like to do? (sleep, eat, explore, upgrade, exit, checkstat) ")
+    if action == "sleep":
+        warning = input("Are you sure?  Who knows, a monster could be watching you(y, n)... ")
+        if warning == "y":
+            ambush = random.randrange(1,5)
+            if ambush == 1:
+                spd = player_spd
+                print("You slept well and peacefully")
+            elif ambush != 1:
+                print("You were ambushed in your sleep, you lost all rations and lost 5 health")
+                rations = 0
+                hlth -= 5
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+        elif warning == "n":
+            print("Playing it safe, I see...")
+        print("You're well rested now, time to go adventure!!!")
+    elif action == "eat":
+        if rations == 0:
+            print("S T A R V E   C H I L D")
+        else:
+            hlth += 5
+            rations -= 1
+            if hlth >= player_hlth:
+                hlth = player_hlth
+            print("You ate rations and recovered 5 hp, time to go explore! ")
+            print ("You are now at " + str(hlth) +"hp")
+    elif action == "explore":
+        adventure = random.randrange(1, 10)
+        if adventure <= 3:
+            s_amount = random.randrange(1,4)
+            print("You ran into a " + str(enemy_name) + "!!!")
+            while enemy_hlth > 0:
+                choice = input("What will you do? (attack, flee, die) ")
+                if choice == "die":
+                    print("You literally die...")
+                    sys.exit()
+                elif choice == "flee":
+                    if enemy_spd >= spd:
+                        print("You tried to run away, but you were caught")
+                    else:
+                        print("You fled, and didn't advance")
+                        level -= 1
+                        points -= 1
+                        skulls -= s_amount
+                        enemy_hlth = 0
+                    spd -= 3
+                elif choice == "attack":
+                    enemy_hlth -= player_attk + player_wpn
+                    print("You attacked the " + str(enemy_name) + ".  It now has " + str(enemy_hlth) + " health")
+                    if enemy_hlth > 0:
+                        hlth -= enemy_attk
+                        print("The " + str(enemy_name) + " attacked you and you lost " + str(enemy_attk) + " health")
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+            if choice != "flee":
+                print("You won!!!")
+                print("+1 Point")
+                print("+" +str(s_amount) + " Skull")
+                kills += 1
+            points += 1
+            skulls += s_amount
+        elif adventure <= 6:
+            print("You walked safely through the cave, this time at least...")
+        elif adventure == 7:
+            print("You tripped and lost 2 health, weakling")
+            hlth -= 2
+            if hlth <= 0:
+                print("--GAME OVER--")
+                sys.exit()
+        elif adventure == 8:
+            print("You looped around and stayed at the same level...")
+            level -= 1
+        elif adventure == 9:
+            print("You found a shortcut, and skipped a level!")
+            level += 1
+        level += 1
+    elif action == "upgrade":
+        if points > 0:
+            answer = input("Choose one to upgrade: health, attack, speed: ")
+            if answer == "health":
+                if name != "ZELDA":
+                    player_hlth += 2
+                else:
+                    player_hlth += 1
+                hlth = player_hlth
+                points -= 1
+                print("You're now at " + str(player_hlth) + " health.")
+            elif answer == "attack":
+                if name != "ZELDA":
+                    player_attk += 1
+                else:
+                    player_attk += 0.5
+                points -= 1
+                print("You're now at " + str(player_attk) + " attack.")
+            elif answer == "speed":
+                if name != "ZELDA":
+                    player_spd += 2
+                else:
+                    player_spd += 1
+                spd = player_spd
+                points -= 1
+                print("You're now at " + str(player_spd) + " speed.")
+        else:
+            print("You don't have enough points")
+    elif action == "exit":
+        if name != "FEAR":
+            print("goodbye!!!")
+            sys.exit()
+    elif action == "checkstat":
+        print("you have " + str(player_hlth) + " Max Health")
+        print("You have " + str(player_attk) + " Attack")
+        print("You have " + str(player_spd) + " Max Speed")
+        print("You have " + str(spd) + " Speed")
+        print("You have " + str(points) + " Upgrading Points")
+        print("You have " + str(skulls) + " Skulls")
+        if armor_m == "true":
+            print("You have purchased the Mythril Armor")
+        elif armor_i == "true":
+            print("You have purchased the Iron Armor")
+        elif armor_l == "true":
+            print("You have purchased the Leather Armor")
+        else:
+            print("You have no armor at the moment")
+        if weapon_m == "true":
+            print("You have purchased the Mythril Weapon")
+        elif weapon_i == "true":
+            print("You have purchased the Iron Weapon")
+        elif weapon_w == "true":
+            print("You have purchased the Wooden Sword")
+        else:
+            print("You have no weapons at the moment")
+    print(" ")
+
+#--Shop 6--#
+if name == "CHAIR":
+    print("There was no shopping district to be found...")
+elif name == "ZELDA":
+    print("There was no shopping district to be found...")
+elif name == "FRISK":
+    print("")
+else:
+    print("YOU HAVE REACHED A SHOPPING DISTRICT")
+    while shop != "n":
+        shop = input("Would you like to buy anything? (y/n) ")
+        if shop == "y":
+            if skulls != 0:
+                buy = input("What would you like to buy?(rations, armor, weapon) ")
+                if buy == "rations":
+                    buy_r = int(input("buying rations will cost 1 skulls, how many would you like to buy? "))
+                    if buy_r <= skulls:
+                        print("rations bought!!!")
+                        rations += buy_r
+                        skulls -= buy_r
+                    elif buy_r == "n":
+                        print("make up your mind")
+                elif buy == "armor":
+                    buy_a = input("what armor would you like to buy? (leather, iron, mythril) ")
+                    if buy_a == "leather":
+                        if armor_l == "false":
+                            print("This will cost 10 skulls and will give 2 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("armor bought!!!")
+                                    skulls -= 10
+                                    armor_l = "true"
+                                    player_def = 2
+                        elif armor_l == "true":
+                            print("You already have this item")
+                        elif armor_l == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "iron":
+                        if armor_i == "false":
+                            print("This will cost 20 skulls and will give 4 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    armor_l = "bttr"
+                                    armor_i = "true"
+                                    player_def = 4
+                        elif armor_i == "true":
+                            print("You already have this item")
+                        elif armor_i == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "mythril":
+                        if armor_m == "false":
+                            print("This will cost you 30 skulls and will give you 6 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("armor bought!!!")
+                                    skulls -= 30
+                                    armor_l = "bttr"
+                                    armor_i = "bttr"
+                                    armor_m = "true"
+                                    player_def = 6
+                        elif armor_m == "true":
+                            print("You already have this item")
+                elif buy == "weapon":
+                    buy_a = input("what armor would you like to buy? (wooden, iron, mythril) ")
+                    if buy_a == "wooden":
+                        if weapon_w == "false":
+                            print("This will cost 10 skulls and will give 2 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("weapon bought!!!")
+                                    skulls -= 10
+                                    weapon_w = "true"
+                                    player_wpn = 2
+                        elif weapon_w == "true":
+                            print("You already have this item")
+                        elif weapon_w == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "iron":
+                        if weapon_i == "false":
+                            print("This will cost 20 skulls and will give 4 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    weapon_w = "bttr"
+                                    weapon_i = "true"
+                                    player_wpn = 4
+                        elif weapon_i == "true":
+                            print("You already have this item")
+                        elif weapon_i == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "mythril":
+                        if weapon_m == "false":
+                            print("This will cost you 30 skulls and will give you 8 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("weapon bought!!!")
+                                    skulls -= 30
+                                    weapon_w = "bttr"
+                                    weapon_i = "bttr"
+                                    weapon_m = "true"
+                                    player_wpn = 8
+                        elif weapon_m == "true":
+                            print("You already have this item")
+            elif skulls == 0:
+                print("You do not have enough skulls in order to buy anything")
+                shop = "n"
+print(" ")
+shop = "y"
+
+#--level 31-35--#
+while level < 36:
+    enemy_name = "Hades Servant"
+    enemy_hlth = servant_hlth
+    enemy_attk = servant_attk - player_def
+    enemy_spd = servant_spd
+    if enemy_attk <= 1:
+        enemy_attk = 1
+    print(str(name) + " is on level " + str(level))
+    print("You are at " + str(hlth) + "hp")
+    action = input("What would you like to do? (sleep, eat, explore, upgrade, exit, checkstat) ")
+    if action == "sleep":
+        warning = input("Are you sure?  Who knows, a monster could be watching you(y, n)... ")
+        if warning == "y":
+            ambush = random.randrange(1,5)
+            if ambush == 1:
+                spd = player_spd
+                print("You slept well and peacefully")
+            elif ambush != 1:
+                print("You were ambushed in your sleep, you lost all rations and lost 5 health")
+                rations = 0
+                hlth -= 5
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+        elif warning == "n":
+            print("Playing it safe, I see...")
+        print("You're well rested now, time to go adventure!!!")
+    elif action == "eat":
+        if rations == 0:
+            print("S T A R V E   C H I L D")
+        else:
+            hlth += 5
+            rations -= 1
+            if hlth >= player_hlth:
+                hlth = player_hlth
+            print("You ate rations and recovered 5 hp, time to go explore! ")
+            print ("You are now at " + str(hlth) +"hp")
+    elif action == "explore":
+        adventure = random.randrange(1, 10)
+        if adventure <= 3:
+            s_amount = random.randrange(1,4)
+            print("You ran into a " + str(enemy_name) + "!!!")
+            while enemy_hlth > 0:
+                choice = input("What will you do? (attack, flee, die) ")
+                if choice == "die":
+                    print("You literally die...")
+                    sys.exit()
+                elif choice == "flee":
+                    if enemy_spd >= spd:
+                        print("You tried to run away, but you were caught")
+                    else:
+                        print("You fled, and didn't advance")
+                        level -= 1
+                        points -= 1
+                        skulls -= s_amount
+                        enemy_hlth = 0
+                    spd -= 3
+                elif choice == "attack":
+                    enemy_hlth -= player_attk + player_wpn
+                    print("You attacked the " + str(enemy_name) + ".  It now has " + str(enemy_hlth) + " health")
+                    if enemy_hlth > 0:
+                        hlth -= enemy_attk
+                        print("The " + str(enemy_name) + " attacked you and you lost " + str(enemy_attk) + " health")
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+            if choice != "flee":
+                print("You won!!!")
+                print("+1 Point")
+                print("+" + str(s_amount) + " Skull")
+                kills += 1
+            points += 1
+            skulls += s_amount
+        elif adventure <= 6:
+            print("You walked safely through the cave, this time at least...")
+        elif adventure == 7:
+            print("You tripped and lost 2 health, weakling")
+            hlth -= 2
+            if hlth <= 0:
+                print("--GAME OVER--")
+                sys.exit()
+        elif adventure == 8:
+            print("You looped around and stayed at the same level...")
+            level -= 1
+        elif adventure == 9:
+            print("You found a shortcut, and skipped a level!")
+            level += 1
+        level += 1
+    elif action == "upgrade":
+        if points > 0:
+            answer = input("Choose one to upgrade: health, attack, speed: ")
+            if answer == "health":
+                if name != "ZELDA":
+                    player_hlth += 2
+                else:
+                    player_hlth += 1
+                hlth = player_hlth
+                points -= 1
+                print("You're now at " + str(player_hlth) + " health.")
+            elif answer == "attack":
+                if name != "ZELDA":
+                    player_attk += 1
+                else:
+                    player_attk += 0.5
+                points -= 1
+                print("You're now at " + str(player_attk) + " attack.")
+            elif answer == "speed":
+                if name != "ZELDA":
+                    player_spd += 2
+                else:
+                    player_spd += 1
+                spd = player_spd
+                points -= 1
+                print("You're now at " + str(player_spd) + " speed.")
+        else:
+            print("You don't have enough points")
+    elif action == "exit":
+        if name != "FEAR":
+            print("goodbye!!!")
+            sys.exit()
+    elif action == "checkstat":
+        print("you have " + str(player_hlth) + " Max Health")
+        print("You have " + str(player_attk) + " Attack")
+        print("You have " + str(player_spd) + " Max Speed")
+        print("You have " + str(spd) + " Speed")
+        print("You have " + str(points) + " Upgrading Points")
+        print("You have " + str(skulls) + " Skulls")
+        if armor_m == "true":
+            print("You have purchased the Mythril Armor")
+        elif armor_i == "true":
+            print("You have purchased the Iron Armor")
+        elif armor_l == "true":
+            print("You have purchased the Leather Armor")
+        else:
+            print("You have no armor at the moment")
+        if weapon_m == "true":
+            print("You have purchased the Mythril Weapon")
+        elif weapon_i == "true":
+            print("You have purchased the Iron Weapon")
+        elif weapon_w == "true":
+            print("You have purchased the Wooden Sword")
+        else:
+            print("You have no weapons at the moment")
+    print(" ")
+
+#--Shop 7--#
+if name == "CHAIR":
+    print("There was no shopping district to be found...")
+elif name == "ZELDA":
+    print("There was no shopping district to be found...")
+elif name == "FRISK":
+    print("")
+else:
+    print("YOU HAVE REACHED A SHOPPING DISTRICT")
+    while shop != "n":
+        shop = input("Would you like to buy anything? (y/n) ")
+        if shop == "y":
+            if skulls != 0:
+                buy = input("What would you like to buy?(rations, armor, weapon) ")
+                if buy == "rations":
+                    buy_r = int(input("buying rations will cost 1 skulls, how many would you like to buy? "))
+                    if buy_r <= skulls:
+                        print("rations bought!!!")
+                        rations += buy_r
+                        skulls -= buy_r
+                    elif buy_r == "n":
+                        print("make up your mind")
+                elif buy == "armor":
+                    buy_a = input("what armor would you like to buy? (leather, iron, mythril) ")
+                    if buy_a == "leather":
+                        if armor_l == "false":
+                            print("This will cost 10 skulls and will give 2 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("armor bought!!!")
+                                    skulls -= 10
+                                    armor_l = "true"
+                                    player_def = 2
+                        elif armor_l == "true":
+                            print("You already have this item")
+                        elif armor_l == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "iron":
+                        if armor_i == "false":
+                            print("This will cost 20 skulls and will give 4 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    armor_l = "bttr"
+                                    armor_i = "true"
+                                    player_def = 4
+                        elif armor_i == "true":
+                            print("You already have this item")
+                        elif armor_i == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "mythril":
+                        if armor_m == "false":
+                            print("This will cost you 30 skulls and will give you 6 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("armor bought!!!")
+                                    skulls -= 30
+                                    armor_l = "bttr"
+                                    armor_i = "bttr"
+                                    armor_m = "true"
+                                    player_def = 6
+                        elif armor_m == "true":
+                            print("You already have this item")
+                elif buy == "weapon":
+                    buy_a = input("what armor would you like to buy? (wooden, iron, mythril) ")
+                    if buy_a == "wooden":
+                        if weapon_w == "false":
+                            print("This will cost 10 skulls and will give 2 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("weapon bought!!!")
+                                    skulls -= 10
+                                    weapon_w = "true"
+                                    player_wpn = 2
+                        elif weapon_w == "true":
+                            print("You already have this item")
+                        elif weapon_w == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "iron":
+                        if weapon_i == "false":
+                            print("This will cost 20 skulls and will give 4 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    weapon_w = "bttr"
+                                    weapon_i = "true"
+                                    player_wpn = 4
+                        elif weapon_i == "true":
+                            print("You already have this item")
+                        elif weapon_i == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "mythril":
+                        if weapon_m == "false":
+                            print("This will cost you 30 skulls and will give you 8 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("weapon bought!!!")
+                                    skulls -= 30
+                                    weapon_w = "bttr"
+                                    weapon_i = "bttr"
+                                    weapon_m = "true"
+                                    player_wpn = 8
+                        elif weapon_m == "true":
+                            print("You already have this item")
+            elif skulls == 0:
+                print("You do not have enough skulls in order to buy anything")
+                shop = "n"
+print(" ")
+shop = "y"
+
+#--level 36-40--#
+while level < 41:
+    enemy_name = "Reaper"
+    enemy_hlth = reaper_hlth
+    enemy_attk = reaper_attk - player_def
+    enemy_spd = reaper_spd
+    if enemy_attk <= 1:
+        enemy_attk = 1
+    print(str(name) + " is on level " + str(level))
+    print("You are at " + str(hlth) + "hp")
+    action = input("What would you like to do? (sleep, eat, explore, upgrade, exit, checkstat) ")
+    if action == "sleep":
+        warning = input("Are you sure?  Who knows, a monster could be watching you(y, n)... ")
+        if warning == "y":
+            ambush = random.randrange(1,4)
+            if ambush == 1:
+                spd = player_spd
+                print("You slept well and peacefully")
+            elif ambush != 1:
+                print("You were ambushed in your sleep, you lost all rations and lost 5 health")
+                rations = 0
+                hlth -= 5
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+        elif warning == "n":
+            print("Playing it safe, I see...")
+        print("You're well rested now, time to go adventure!!!")
+    elif action == "eat":
+        if rations == 0:
+            print("S T A R V E   C H I L D")
+        else:
+            hlth += 5
+            rations -= 1
+            if hlth >= player_hlth:
+                hlth = player_hlth
+            print("You ate rations and recovered 5 hp, time to go explore! ")
+            print ("You are now at " + str(hlth) +"hp")
+    elif action == "explore":
+        adventure = random.randrange(1, 10)
+        if adventure <= 3:
+            s_amount = random.randrange(1,4)
+            print("You ran into a " + str(enemy_name) + "!!!")
+            while enemy_hlth > 0:
+                choice = input("What will you do? (attack, flee, die) ")
+                if choice == "die":
+                    print("You literally die...")
+                    sys.exit()
+                elif choice == "flee":
+                    if enemy_spd >= spd:
+                        print("You tried to run away, but you were caught")
+                    else:
+                        print("You fled, and didn't advance")
+                        level -= 1
+                        points -= 1
+                        skulls -= s_amount
+                        enemy_hlth = 0
+                    spd -= 3
+                elif choice == "attack":
+                    enemy_hlth -= player_attk + player_wpn
+                    print("You attacked the " + str(enemy_name) + ".  It now has " + str(enemy_hlth) + " health")
+                    if enemy_hlth > 0:
+                        hlth -= enemy_attk
+                        print("The " + str(enemy_name) + " attacked you and you lost " + str(enemy_attk) + " health")
+                if hlth <= 0:
+                    print("--GAME OVER--")
+                    sys.exit()
+            if choice != "flee":
+                print("You won!!!")
+                print("+1 Point")
+                print("+" + str(s_amount) + " Skull")
+                kills += 1
+            points += 1
+            skulls += s_amount
+        elif adventure <= 6:
+            print("You walked safely through the cave, this time at least...")
+        elif adventure == 7:
+            print("You tripped and lost 2 health, weakling")
+            hlth -= 2
+            if hlth <= 0:
+                print("--GAME OVER--")
+                sys.exit()
+        elif adventure == 8:
+            print("You looped around and stayed at the same level...")
+            level -= 1
+        elif adventure == 9:
+            print("You found a shortcut, and skipped a level!")
+            level += 1
+        level += 1
+    elif action == "upgrade":
+        if points > 0:
+            answer = input("Choose one to upgrade: health, attack, speed: ")
+            if answer == "health":
+                if name != "ZELDA":
+                    player_hlth += 2
+                else:
+                    player_hlth += 1
+                hlth = player_hlth
+                points -= 1
+                print("You're now at " + str(player_hlth) + " health.")
+            elif answer == "attack":
+                if name != "ZELDA":
+                    player_attk += 1
+                else:
+                    player_attk += 0.5
+                points -= 1
+                print("You're now at " + str(player_attk) + " attack.")
+            elif answer == "speed":
+                if name != "ZELDA":
+                    player_spd += 2
+                else:
+                    player_spd += 1
+                spd = player_spd
+                points -= 1
+                print("You're now at " + str(player_spd) + " speed.")
+        else:
+            print("You don't have enough points")
+    elif action == "exit":
+        if name != "FEAR":
+            print("goodbye!!!")
+            sys.exit()
+    elif action == "checkstat":
+        print("you have " + str(player_hlth) + " Max Health")
+        print("You have " + str(player_attk) + " Attack")
+        print("You have " + str(player_spd) + " Max Speed")
+        print("You have " + str(spd) + " Speed")
+        print("You have " + str(points) + " Upgrading Points")
+        print("You have " + str(skulls) + " Skulls")
+        if armor_m == "true":
+            print("You have purchased the Mythril Armor")
+        elif armor_i == "true":
+            print("You have purchased the Iron Armor")
+        elif armor_l == "true":
+            print("You have purchased the Leather Armor")
+        else:
+            print("You have no armor at the moment")
+        if weapon_m == "true":
+            print("You have purchased the Mythril Weapon")
+        elif weapon_i == "true":
+            print("You have purchased the Iron Weapon")
+        elif weapon_w == "true":
+            print("You have purchased the Wooden Sword")
+        else:
+            print("You have no weapons at the moment")
+    print(" ")
+
+#--Final Shop--##
+if kills >= 100:
+    print("YOU HAVE REACHED A SHOPPING DISTRICT")
+    while shop != "n":
+        shop = input("Would you like to buy anything? (y/n) ")
+        if shop == "y":
+            if skulls != 0:
+                buy = input("What would you like to buy?(rations, armor, weapon) ")
+                if buy == "rations":
+                    buy_r = int(input("buying rations will cost 1 skulls, how many would you like to buy? "))
+                    if buy_r <= skulls:
+                        print("rations bought!!!")
+                        rations += buy_r
+                        skulls -= buy_r
+                    elif buy_r == "n":
+                        print("make up your mind")
+                elif buy == "armor":
+                    buy_a = input("what armor would you like to buy? (leather, iron, mythril) ")
+                    if buy_a == "leather":
+                        if armor_l == "false":
+                            print("This will cost 10 skulls and will give 2 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("armor bought!!!")
+                                    skulls -= 10
+                                    armor_l = "true"
+                                    player_def = 2
+                        elif armor_l == "true":
+                            print("You already have this item")
+                        elif armor_l == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "iron":
+                        if armor_i == "false":
+                            print("This will cost 20 skulls and will give 4 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    armor_l = "bttr"
+                                    armor_i = "true"
+                                    player_def = 4
+                        elif armor_i == "true":
+                            print("You already have this item")
+                        elif armor_i == "bttr":
+                            print("You already have better armor!")
+                    if buy_a == "mythril":
+                        if armor_m == "false":
+                            print("This will cost you 30 skulls and will give you 6 defense")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("armor bought!!!")
+                                    skulls -= 30
+                                    armor_l = "bttr"
+                                    armor_i = "bttr"
+                                    armor_m = "true"
+                                    player_def = 6
+                        elif armor_m == "true":
+                            print("You already have this item")
+                elif buy == "weapon":
+                    buy_a = input("what armor would you like to buy? (wooden, iron, mythril) ")
+                    if buy_a == "wooden":
+                        if weapon_w == "false":
+                            print("This will cost 10 skulls and will give 2 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 10:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 10:
+                                    print("weapon bought!!!")
+                                    skulls -= 10
+                                    weapon_w = "true"
+                                    player_wpn = 2
+                        elif weapon_w == "true":
+                            print("You already have this item")
+                        elif weapon_w == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "iron":
+                        if weapon_i == "false":
+                            print("This will cost 20 skulls and will give 4 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 20:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 20:
+                                    print("armor bought!!!")
+                                    skulls -= 20
+                                    weapon_w = "bttr"
+                                    weapon_i = "true"
+                                    player_wpn = 4
+                        elif weapon_i == "true":
+                            print("You already have this item")
+                        elif weapon_i == "bttr":
+                            print("You already have a weapon better than this!")
+                    if buy_a == "mythril":
+                        if weapon_m == "false":
+                            print("This will cost you 30 skulls and will give you 8 attack")
+                            buy_a = input("are you sure? (y/n) ")
+                            if buy_a == "y":
+                                if skulls < 30:
+                                    print("you do not have enough for this item")
+                                elif skulls >= 30:
+                                    print("weapon bought!!!")
+                                    skulls -= 30
+                                    weapon_w = "bttr"
+                                    weapon_i = "bttr"
+                                    weapon_m = "true"
+                                    player_wpn = 8
+                        elif weapon_m == "true":
+                            print("You already have this item")
+            elif skulls == 0:
+                print("You do not have enough skulls in order to buy anything")
+                shop = "n"
+print(" ")
+shop = "y"
+
+#--FINAL BOSS--#
+if kills >= 100:
+    print("CONGRATS!!!  You have unlocked a secret boss!!!")
+    boss = input("Would you like to fight them? (y/n) ")
+    if name == "FRISK":
+        print("Okay so that's a yes...")
+        boss = "y"
+    if boss == "y":
+        print("SANS comes out to fight you...")
+        boss_attk -= player_def
+        while boss_hlth > 0:
+            battle = input("What will you do? (attack, flee, spare)")
+            if battle == "attack":
+                boss_hlth -= player_attk + player_wpn
+                print("You attacked SANS.  He now has " + str(boss_hlth) + " health.")
+                if boss_hlth > 0:
+                    hlth -= boss_attk
+                    print("SANS attacked you and you lost " + str(boss_attk) + " health")
+            elif battle == "spare":
+                hlth = -9999999
+                print("SANS attacked you and you lost 9999999 health.")
+                print("GET DUNKED ONNNNNNNN")
+                print("No satisfying end for you!!!")
+                sys.exit()
+        
+            elif battle == "flee":
+                print("no")
+        print("CORATONIAN")
+    elif boss == "n":
+        print("Wow, scaredy cat...")
+        
+        
+##--ENDING DECISION--##rat
+print("CONGRATULATIONS!!!  You Won!!!")
+player_attk += player_attk
+if player_hlth <= player_spd >= player_attk:
+    print("You got THE COWARD ending")
+    if name == "CHAIR":
+        print("again...")
+        print("1Z")
+    else:
+        print("1C")
+elif kills <= 15:
+    print("You got LUCKY ending")
+    if name == "CHAIR":
+        print("again...")
+        print("5A")
+    else:
+        print("5R")
+elif player_spd < player_attk > player_hlth:
+    print("You got HEAVY HITTER ending")
+    if name == "CHAIR":
+        print("again...")
+        print("2E")
+    else:
+        print("2H")
+elif player_attk < player_hlth > player_spd:
+    print("You got TANK ending")
+    if name == "CHAIR":
+        print("again...")
+        print("3L")
+    else:
+        print("3A")
+elif points > 1:
+    print("You got CLUELESS ending")
+    if name == "CHAIR":
+        print("again...")
+        print("4D")
+    else:
+        print("4I")
+elif kills >= 25:
+    print("But nobody came...")
+    print("CHARA")
+print("but can you get all endings?")
+if name == "CHAIR":
+    print("apparently so...")
+if name == "FEAR":
+    print("Y O U   D I S G U S T   M E")
+if name == "ZELDA":
+    print("CONGRATULATIONS!!!")
+    choice = input("Would you like to finally hear WHY he went into the dungeons? (y/n) ")
+    if choice == "y":
+        print("Long ago, everything was peaceful. " + str(name) + " could spend their days")
+        print("peacefully in their home town, Orbain...  Until one fateful day, when all came to ruin...")
+        print("Three pillars rose into the air simultaneously, Each one worse than the last.")
+        print("With these three pillars came a terrible disease known only as The Orbain Plague.")
+        print("Your Hero's mother was infected with this disease. It was said this plague could only")
+        print("be stopped when all three pillars are explored, and destroyed. The kingdom of Coraton")
+        print("is putting a $25,000 bounty on the first pillar, $50,000 on the second, and $100,000 on the third.")
+        print("If you explore the dungeons found in these pillars...  you could save your mom and live")
+        print("in luxury!!! You worked hard to complete every dungeon...  until you finally beat them all!")
+        if player_spd != -6:
+            print("But it was all a lie in the end. Everyone you loved has died. You seek refuge in the kingdom")
+            print("but they don't let you in of fear you carry the disease.")
+            print("YOU GOT THE BAD ENDING (you know why)")
+        elif player_spd == -6:
+            print("Your hero's mom was saved, along with the rest of the world! The king paid " + str(name) + " handsomely and you were")
+            print("able to turn your sleepy little town into an Empire!!!")
+            print("YOU GOT THE GOOD ENDING!!!")
+            print("FRISK, THE TRUE NAME")
