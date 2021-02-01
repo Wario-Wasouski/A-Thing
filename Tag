@@ -1,0 +1,143 @@
+"""
+Graphics
+Instruction: Graphics
+Part 3: A Simple Scene
+"""
+
+import tsapp
+import sys
+import random
+
+# Create a window
+turns = int(input("How many turns do you want? Pick an odd number please (1-10): "))
+while turns % 2 == 0 or turns > 10:
+    turns = int(input("Pick an odd number please (1-10): "))
+window = tsapp.GraphicsWindow()
+
+# Create two characters and a background
+background = tsapp.Sprite("CuriousLabSeshat.jpg", 0, 0)
+player1 = tsapp.Sprite("AirChildRunSheet.png", 0, 0)
+player2 = tsapp.Sprite("AirChild2RunSheet.png", 800, 0)
+runner = player1
+chaser = player2
+frozen1 = False
+frozen2 = False
+
+# Add the sprites to the scene
+window.add_object(background)
+window.add_object(player1)
+window.add_object(player2)
+switched = 0
+score1 = 0
+score2 = 0
+
+# Adjust sprites
+player1.scale = 0.5
+player2.scale = 0.5
+player2.flip_x = True
+print("Player 1: WASD")
+print("Player 2: Up, Left, Down, Right")
+print("Runner: Run from player 2 for 15 seconds, then chase Player 2!!!")
+print("Chaser: Catch player 1 before 15 seconds, and run from him after")
+# Main loop
+while window.is_running:
+    if not frozen1:
+        if tsapp.is_key_down(tsapp.K_w):
+            if runner == player1:
+                player1.y -= 2
+            player1.y -= 5
+        if tsapp.is_key_down(tsapp.K_s):
+            if runner == player1:
+                player1.y += 2
+            player1.y += 5
+        if tsapp.is_key_down(tsapp.K_a):
+            if runner == player1:
+                player1.x -= 2
+            player1.x -= 5
+            player1.flip_x = True
+        if tsapp.is_key_down(tsapp.K_d):
+            if runner == player1:
+                player1.x += 2
+            player1.x += 5
+            player1.flip_x = False
+    if not frozen2:
+        if tsapp.is_key_down(tsapp.K_UP):
+            if runner == player2:
+                player2.y -= 2
+            player2.y -= 5
+        if tsapp.is_key_down(tsapp.K_DOWN):
+            if runner == player2:
+                player2.y += 2
+            player2.y += 5
+        if tsapp.is_key_down(tsapp.K_LEFT):
+            if runner == player2:
+                player2.x -= 2
+            player2.x -= 5
+            player2.flip_x = True
+        if tsapp.is_key_down(tsapp.K_RIGHT):
+            if runner == player2:
+                player2.x += 2
+            player2.x += 5
+            player2.flip_x = False
+    time = tsapp.get_program_duration() - (switched * 30000)
+    if time > 15000:
+        print("Switching Sides!!!")
+        switched += 1
+        if runner == player1:
+            chaser = player1
+            runner = player2
+        elif runner == player2:
+            chaser = player2
+            runner = player1
+    if tsapp.is_mouse_down():
+        print(str(tsapp.get_mouse_position()))
+    if player1.center_x > 1017 or player1.center_x < 0 or player1.center_y > 572 or player1.center_y < 0:
+        if not frozen1:
+            print("Don't go out of bounds!!!!")
+        if runner == player1:
+            player2.center_x = player1.center_x
+            player2.center_y = player1.center_y
+        elif chaser == player1:
+            frozen1 = True
+    if player2.center_x > 1017 or player2.center_x < 0 or player2.center_y > 572 or player2.center_y < 0:
+        if not frozen2:
+            print("Don't go out of bounds!!!!")
+        if runner == player2:
+            player1.center_x = player2.center_x
+            player1.center_y = player2.center_y
+        elif chaser == player2:
+            frozen2 = True
+    if abs(chaser.center_x - runner.center_x) <= 65 and abs(chaser.center_y - runner.center_y) <= 65:
+        print("You were caught!!!")
+        prev_turns = turns
+        if runner == player1:
+            print("Player 1, You lost the round")
+            player1.x = 50
+            player1.y = 50
+            player2.x = 850
+            player2.y = 50
+            score2 += 1
+            turns -= 1
+        elif runner == player2:
+            print("Player 2, You lost the round")
+            player1.x = 50
+            player1.y = 50
+            player2.x = 850
+            player2.y = 50
+            score1 += 1
+            turns -= 1
+        if turns <= 0:
+            print("The game is now over!!! The score is: " + str(score1) + "-" + str(score2))
+            if score1 - score2 > 0:
+                print("Player 2, You lost!!!")
+                break
+            elif score2 - score1 > 0:
+                print("Player 1, You lost!!!")
+                break
+            else:
+                print("YOU CHANGED THE CODE")
+                break
+        if prev_turns > turns:
+            frozen1 = False
+            frozen2 = False
+    window.finish_frame()
