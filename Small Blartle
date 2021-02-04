@@ -1,0 +1,133 @@
+"""
+graphic_game
+
+Description: a BLARTLE
+"""
+
+# Imports
+import tsapp
+import sys
+import random
+
+# Variables
+player1_attk = 5
+player1_hlth = 50
+player2_attk = 5
+player2_hlth = 50
+window = tsapp.GraphicsWindow()
+background = tsapp.Sprite("Arena.jpg", 0, 0)
+player1 = tsapp.Sprite("ElectricMonster.png", 0, 200)
+player2 = tsapp.Sprite("FireMonster.png", 700, 200)
+player1_attack = tsapp.Sprite("PurpleBlob.png", -2000, 0)
+player2_attack = tsapp.Sprite("RedBlob.png", 2000, 0)
+text1 = tsapp.TextLabel("Archivo-Bold.ttf", 25, -2000, -2000, 250, "Health: " + str(player1_hlth), tsapp.BLACK)
+text2 = tsapp.TextLabel("Archivo-Bold.ttf", 25, -2000, -2000, 250, "Health: " + str(player2_hlth), tsapp.BLACK)
+
+player1_jump = False
+player1.scale = 0.5
+player1_shot = False
+
+player2.flip_x = True
+player2_jump = False
+player2.scale = 0.5
+player2_attack.flip_x = True
+player2_shot = False
+
+# Adding Sprites
+window.add_object(background)
+window.add_object(player1)
+window.add_object(player2)
+window.add_object(player1_attack)
+window.add_object(player2_attack)
+window.add_object(text1)
+window.add_object(text2)
+
+# Intro
+print("Welcome to Battle Simulator!!!")
+print("You just fight and jump...")
+print("Player 1 (Electric Monster), you will use W to jump, and Q to shoot a Purple Blob")
+print("Player 2 (Fire Monster), you will use UP to jump, and RIGHT to shoot a Red Blob")
+input("Do you understand? (We don't care about ur answer) ")
+
+# Main Loop
+while window.is_running:
+    # Health
+    text2.x = player2.x
+    text2.y = player2.y - 50
+    text1.x = player1.x
+    text1.y = player1.y - 50
+    text1.text = "Health: " + str(player1_hlth)
+    text2.text = "Health: " + str(player2_hlth)
+    # Jumping p1
+    if tsapp.is_key_down(tsapp.K_w) and not player1_jump:
+        player1.y_speed = -150
+    if player1.y <= 50:
+        player1.y_speed = 150
+        player1_jump = True
+    if player1.y > 300:
+        player1.y = 300
+        player1.y_speed = 0
+        player1_jump = False
+        
+    # Jumping p2
+    if tsapp.is_key_down(tsapp.K_UP) and not player2_jump:
+        player2.y_speed = -150
+    if player2.y <= 50:
+        player2.y_speed = 150
+        player2_jump = True
+    if player2.y > 300:
+        player2.y = 300
+        player2.y_speed = 0
+        player2_jump = False
+        
+    # Attack p1
+    if tsapp.is_key_down(tsapp.K_q) and not player1_shot:
+        player1_attack.x = player1.x + 50
+        player1_attack.y = player1.y + 50
+        player1_shot = True
+    if player1_shot:
+        player1_attack.x_speed = 150
+        if player1_attack.x >= 1018 and player1_shot:
+            player1_attack.y = 0
+            player1_attack.x = -2000
+            player1_attack.x_speed = 0
+            player1_shot = False
+            
+    # Attack p2
+    if tsapp.is_key_down(tsapp.K_m) and not player2_shot:
+        player2_attack.x = player2.x - 0
+        player2_attack.y = player2.y + 50
+        player2_shot = True
+    if player2_shot:
+        player2_attack.x_speed = -150
+        if player2_attack.x <= 0 and player2_shot:
+            player2_attack.y = 0
+            player2_attack.x = 2000
+            player2_attack.x_speed = 0
+            player2_shot = False
+            
+    #Health System
+    if abs(player1_attack.center_x - player2.center_x) <= 65 and abs(player1_attack.center_y - player2.center_y) <= 65:
+        player1_attack.x = -2000
+        player1_attack.x_speed = 0
+        player2_hlth -= player1_attk
+        player1_shot = False
+        
+    #Health System Again...
+    if abs(player2_attack.center_x - player1.center_x) <= 65 and abs(player2_attack.center_y - player1.center_y) <= 65:
+        player2_attack.x = 2000
+        player2_attack.x_speed = 0
+        player1_hlth -= player2_attk
+        player2_shot = False
+        
+    #Ending 1
+    if player1_hlth <= 0:
+        print("Congratulations Player 2, YOU WON!!!")
+        break
+        
+    #Ending 2
+    if player2_hlth <= 0:
+        print("Congratulations Player 1, YOU WON!!!")
+        break
+        
+    window.finish_frame()
